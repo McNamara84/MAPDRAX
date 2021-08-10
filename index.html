@@ -1,56 +1,63 @@
-<!doctype html  style="height: 100%; margin: 0;">
+<!doctype html style="height: 100%; margin: 0;">
 <html lang="de">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-    <script src="pois.js"></script>
-    <link rel="stylesheet" href="map.css">
-    <title>Die Erde 2550</title>
-  </head>
-  <body style="height: 100%; margin: 0;">
-    <div id="map" style="width: 100%; height: 100%; background: #000000; margin: 0;"></div>
-    <script type="text/javascript">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+  <script src="pois.js"></script>
+  <link rel="stylesheet" href="map.css">
+  <title>Die Erde 2550</title>
+</head>
+
+<body style="height: 100%; margin: 0;">
+  <div id="map" style="width: 100%; height: 100%; background: #000000; margin: 0;"></div>
+  <script type="text/javascript">
     // Map Objekt
     var map = L.map('map', {
-        center: [0, 0],
-        zoom: 4,
-        minZoom: 3,
-        maxZoom: 8,
-        continuousWorld: true,
-        
+      center: [0, 0],
+      zoom: 4,
+      minZoom: 3,
+      maxZoom: 8,
+      continuousWorld: true,
+
     });
     // Tiles
     var kontinente = L.tileLayer('Erde/{z}/{x}/{y}.png', {
       foo: 'bar',
       //minZoom: 0,
       //maxZoom: 5,
-      attribution: '&copy; 2020 <a href="https://de.maddraxikon.com/">Maddraxikon</a>'}).addTo(map);
-      // Beschriftung der Kontinente
-      var labelIcons = [];
-      var labelList = [];
-      
-      function printLabels() {
-        
-        for (let i = 0; i < labels.length; i++) {
-          labelIcons[i] = L.divIcon({
-            className: 'beschriftung',
-            html: labels[i][2]
-          });
-          labelList[i] = L.marker([labels[i][0], labels[i][1]], {icon: labelIcons[i]});
-        }
-      }
+      attribution: '&copy; 2021 <a href="https://de.maddraxikon.com/">Maddraxikon</a>'
+    }).addTo(map);
+    // Beschriftung der Kontinente
+    var labelIcons = [];
+    var labelList = [];
 
-      // Icons
+    function printLabels() {
+
+      for (let i = 0; i < labels.length; i++) {
+        labelIcons[i] = L.divIcon({
+          className: 'beschriftung',
+          html: labels[i][2]
+        });
+        labelList[i] = L.marker([labels[i][0], labels[i][1]], { icon: labelIcons[i] });
+      }
+    }
+
+    // Icons
     var stadt = L.icon({
       iconUrl: 'https://map.maddraxikon.com/marker/stadt.png',
       iconSize: [8, 8],
       //iconAnchor: null,
     });
     var bunkerIcon = L.icon({
-      iconUrl: 'https://map.maddraxikon.com/marker/bunker.png',
+      iconUrl: 'https://map.maddraxikon.com/marker/bunkerIcon.png',
       iconSize: [8, 8],
       iconAnchor: null,
     });
@@ -64,55 +71,71 @@
       iconSize: [40, 40],
       iconAnchor: null,
     });
-      // Städte Marker
-      var staedteList = [];
-      function printStaedte() {
-        for (let i = 0; i < staedte.length; i++) {
-          staedteList[i] = L.marker([staedte[i][0], staedte[i][1]], {
-            title: staedte[i][2],
-            icon: stadt,
-          });
-          staedteList[i].bindPopup('<a href="https://de.maddraxikon.com/index.php?title=' + staedte[i][3] + '" target="_blank">' + staedte[i][2] + '</a>');
-        }
+    // Städte Marker
+    var staedteList = [];
+    function printStaedte() {
+      for (let i = 0; i < staedte.length; i++) {
+        staedteList[i] = L.marker([staedte[i][0], staedte[i][1]], {
+          title: staedte[i][2],
+          icon: stadt,
+        });
+        staedteList[i].bindPopup('<a href="https://de.maddraxikon.com/index.php?title=' + staedte[i][3] + '" target="_blank">' + staedte[i][2] + '</a>');
       }
-      // Wolkenstädte Marker
-      var wolkenstaedteList = [];
-      function printWolkenstaedte() {
-        for (let i = 0; i < wolkenstaedte.length; i++) {
-          wolkenstaedteList[i] = L.marker([wolkenstaedte[i][0], wolkenstaedte[i][1]], {
-            title: wolkenstaedte[i][2],
-            icon: wolkenstadt,
-          });
-          wolkenstaedteList[i].bindPopup('<a href="https://de.maddraxikon.com/index.php?title=' + wolkenstaedte[i][3] + '" target="_blank">' + wolkenstaedte[i][2] + '</a>');
-        }
+    }
+    // Wolkenstädte Marker
+    var wolkenstaedteList = [];
+    function printWolkenstaedte() {
+      for (let i = 0; i < wolkenstaedte.length; i++) {
+        wolkenstaedteList[i] = L.marker([wolkenstaedte[i][0], wolkenstaedte[i][1]], {
+          title: wolkenstaedte[i][2],
+          icon: wolkenstadt,
+        });
+        wolkenstaedteList[i].bindPopup('<a href="https://de.maddraxikon.com/index.php?title=' + wolkenstaedte[i][3] + '" target="_blank">' + wolkenstaedte[i][2] + '</a>');
       }
-      // Bunker Marker
-      var bunkerList = [];
-      function printBunker() {
-        for (let i = 0; i < bunker.length; i++) {
-          bunkerList[i] = L.marker([bunker[i][0], bunker[i][1]], {
-            title: bunker[i][2],
-            icon: bunkerIcon,
-          });
-          bunkerList[i].bindPopup('<a href="https://de.maddraxikon.com/index.php?title=' + bunker[i][3] + '" target="_blank">' + bunker[i][2] + '</a>');
-        }
+    }
+    // Bunker Marker
+    var bunkerList = [];
+    function printBunker() {
+      for (let i = 0; i < bunker.length; i++) {
+        bunkerList[i] = L.marker([bunker[i][0], bunker[i][1]], {
+          title: bunker[i][2],
+          icon: bunkerIcon,
+        });
+        bunkerList[i].bindPopup('<a href="https://de.maddraxikon.com/index.php?title=' + bunker[i][3] + '" target="_blank">' + bunker[i][2] + '</a>');
       }
+    }
 
-      printLabels();
-      printStaedte();
-      printBunker();
-      printWolkenstaedte();
+    var piratenzone1 = L.polygon([
+      [4.565474, 128.320313],
+      [31.802893, 164.619141],
+      [26.037042, 177.363281],
+      [-1.230374, 145.546875]
+    ], {color: 'red',});
+    //piratenzone1.addTo(map);
+
+    var piratenzone2 = L.polygon([
+      [37.961523, 39.506836],
+      [38.23818, 48.999023],
+      [32.62087, 48.999023],
+      [33.174342, 38.452148]
+    ], {color: 'red',});
+    //piratenzone2.addTo(map);
+
+    printLabels();
+    printStaedte();
+    printBunker();
+    printWolkenstaedte();
 
     // Hydritenstadt Marker
     var vernon = L.marker([21.125498, 12.963867], {
-        title: 'Vernon',
-        icon: hydritenstadt,
+      title: 'Vernon',
+      icon: hydritenstadt,
     });
     vernon.bindPopup('<a href="https://de.maddraxikon.com/index.php?title=Vernon" target="_blank">Vernon</a>');
 
     var rymaris = L.marker([11.953349, 18.193359], {
-        title: 'Rymaris',
-        icon: hydritenstadt,
+      title: 'Rymaris',
+      icon: hydritenstadt,
     });
     rymaris.bindPopup('<a href="https://de.maddraxikon.com/index.php?title=Rymaris" target="_blank">Rymaris</a>');
 
@@ -122,31 +145,35 @@
     var hydritenstaedte = L.layerGroup([rymaris, vernon]);
     var bunkerMarker = L.layerGroup(bunkerList);
     var beschriftungen = L.layerGroup(labelList).addTo(map);
+    var piraten = L.layerGroup([piratenzone1, piratenzone2]);
 
     //Marker Overlays
-    var overlays={
-    "Städte" : staedteMarker,
-    "Wolkenstädte" : wolkenstaedteMarker,
-    "Hydritenstädte" : hydritenstaedte,
-    "Bunker" : bunkerMarker,
-    "Beschriftung" : beschriftungen,
+    var overlays = {
+      "Städte": staedteMarker,
+      "Wolkenstädte": wolkenstaedteMarker,
+      "Hydritenstädte": hydritenstaedte,
+      "Bunker": bunkerMarker,
+      "Beschriftung": beschriftungen,
+      "Piratengebiete": piraten,
     }
+
     //GROUP CONTROLS
     L.control.layers(null, overlays).addTo(map);
 
 
     // Hilfe zum Anlegen von Markern
     var test = L.marker([-48.748945, 110.214844], {
-        title: 'Hilfsmarker',
-        draggable: true,
+      title: 'Hilfsmarker',
+      draggable: true,
     }).addTo(map);
-    test.on('dragend', function(e) {
+    test.on('dragend', function (e) {
       test.bindPopup(test.getLatLng().toString()).openPopup();
     });
 
     var imageUrl = 'https://map.maddraxikon.com/mapdrax-logo.png',
-    imageBounds = [[32.398516, -52.382812], [38.479395, -32.167969]];
+      imageBounds = [[32.398516, -52.382812], [38.479395, -32.167969]];
     L.imageOverlay(imageUrl, imageBounds).addTo(map);
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>
